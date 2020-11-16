@@ -1,5 +1,5 @@
 # Blog engine for ASP.NET Core 5
-aspnetcore.blog is full-featured yet simple blog engine written in ASP.NET Core 5 MVC. It is small, easy to use and highly customizable.<br>
+aspnetcore.blog is full-featured yet simple blog engine written in ASP.NET Core 5 MVC and SQL Servre. It is small, easy to use and highly customizable.<br>
 **Live Demo**: https://aspnetcoreblog.azurewebsites.net <br>
 **/admin**: Admin panel<br>
 Username: *admin*<br>
@@ -30,7 +30,8 @@ Visitors can subscribe to the blog to be notified on new publications by email v
     - [Check the tags](https://www.opengraph.xyz/url/https:%2F%2Faspnetcoreblog.azurewebsites.net%2F/)
 - Seach engine optimized
 - COnfigured to use CDN to make it easy to serve the images from any CDN using [CDN Tag Helper](https://github.com/madskristensen/WebEssentials.AspNetCore.CdnTagHelpers).
-- Uses Azure Blob Storage to store static files (images,css,js)
+- Configured to use Azure Redis Cache (check Constants.cs to enable)
+- Uses Azure Blob Storage to store static files (images,css,js) (check Constants.cs to enable)
 - Security HTTP headers set
     - [Run security scan](https://securityheaders.com/?q=https%3A%2F%2Faspnetcoreblog.azurewebsites.net&hide=on&followRedirects=on)
 
