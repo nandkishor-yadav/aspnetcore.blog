@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewData["Title"] = "About";
+}
+
+@section MetaContent{
+    <meta name="description" content="About" />
+}
+
+<div class="container">
+    @if (Model != null)
+    {
+        @Html.Raw(@Model.Content)
+    }
+</div>
+

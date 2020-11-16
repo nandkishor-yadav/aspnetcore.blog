@@ -1,0 +1,113 @@
+﻿
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <partial name="_StatusMessages" />
+            <input id="searchbox" class="form-control form-control-alternative shadow" placeholder="Search by title..." type="text">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Create Date</th>
+                        <th>Published</th>
+                        <th>
+                            <a asp-controller="Admin" asp-action="NewPost" class="btn btn-primary float-right">New</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Title</td>
+                            <td>@item.PubDate.ToString("MMMM dd, yyyy")</td>
+                            <td>@item.IsPublished</td>
+                            <td class="td-actions text-right">
+                                <a type="button" rel="tooltip" class="btn btn-success btn-icon btn-sm btn-simple" data-original-title="" title="Edit" asp-controller="Admin" asp-action="Edit" asp-route-id="@item.Id">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                                <button type="button" rel="tooltip" class="btn btn-danger btn-icon btn-sm btn-simple" data-original-title="" title="Delete" id="Delete" onclick="DeletePost('@item.Id')">
+                                    <i class="ni ni-fat-remove pt-1"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+@section Scripts{
+    <script>
+        $("#navbar-main").each(function () {
+            $(this).removeClass("navbar navbar-main navbar-expand-lg navbar-transparent navbar-light headroom");
+            $(this).addClass("navbar navbar-main navbar-expand-lg navbar-dark bg-primary");
+        });
+
+          $(function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            var msg = '@TempData["msg"]';
+            if (msg != "") {
+                Toast.fire({
+                    type: 'success',
+                    title: '@TempData["msg"]'
+                })
+            }
+        });
+
+    function DeletePost(id) {
+      swal.fire({
+             title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+          if (result.value == true) {
+             $.ajax({
+                   type: "POST",
+                   data: {
+                       id: id
+                   },
+                   url: "/Admin/Delete",
+                   dataType: "json",
+                 success: function (result) {
+                     window.location.href = "/Admin/Index";
+                 },
+                   error: function (result) {
+                        alert(result.responseText);
+                   }
+               });
+          } else {
+            //console.log('button B pressed')
+          }
+        })
+        }
+
+        $("#searchbox").on("keyup", function () {
+            var querytext = $(this).val();
+            $("table tr").each(function (results) {
+                if (results != 0) {
+                    var id = $(this).find("td:nth-child(2)").text();
+                    if (id.indexOf(querytext) !==0 && id.toLowerCase().indexOf(querytext.toLowerCase()) < 0) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
+                }
+            });
+        });
+    </script>
+}

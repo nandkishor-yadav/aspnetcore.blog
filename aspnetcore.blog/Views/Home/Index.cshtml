@@ -1,0 +1,115 @@
+﻿@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+@model PagingList<aspnetcore.blog.Models.Post>
+
+@{
+    ViewData["Title"] = Constants.Blog.Name;
+    var host = Context.Request.Host.ToString();
+}
+
+@section JSONLD{
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org/",
+          "@@type": "BlogPosting",
+          "mainEntityOfPage": {
+            "@@type": "WebPage",
+            "@@id": "@host"
+          },
+          "headline": "@Constants.Blog.Name",
+          "description": "@Constants.Blog.Description",
+          "image": {
+            "@@type": "ImageObject",
+            "url": "",
+            "width": "696",
+            "height": "150"
+          },
+          "author": {
+            "@@type": "Person",
+            "name": "@Constants.Blog.AuthorName"
+          },
+          "publisher": {
+            "@@type": "Organization",
+            "name": "@Constants.Blog.AuthorName",
+            "logo": {
+              "@@type": "ImageObject",
+              "url": "",
+              "width": "600",
+              "height": "60"
+            }
+          },
+          "datePublished": "2019-01-01",
+          "dateModified": "2020-11-12"
+        }
+    </script>
+}
+@section MetaContent{
+    <meta name="description" content="@Constants.Blog.Description" />
+    <meta property="og:url" content="@Context.Request.Host@Context.Request.Path" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="@Constants.Blog.Name" />
+    <meta property="og:description" content="@Constants.Blog.Description">
+    <meta property="og:image" content="https://aspnetcoreblog.azurewebsites.net/img/maspnetcore.blog.png" />
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://@Context.Request.Host@Context.Request.Path" />
+}
+<style>
+    hr {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+
+<div class="section features-6">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-10">
+                @foreach (var item in Model)
+                {
+                    <div class="info info-horizontal info-hover-primary" cdnify>
+                        <div class="description pl-4">
+                            <a asp-controller="Home" asp-action="Postpage" asp-route-id="@item.Id" asp-route-slug="@item.Slug">
+                                <h2 class="title display-4">
+                                    @item.Title
+                                </h2>
+                            </a>
+                            <small>@item.PubDate.ToString("MMMM dd, yyyy")</small>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a asp-controller="Admin" asp-action="edit" asp-route-id="@item.Id" title="Edit the post">Edit post</a>}
+                            <p>
+                                @Html.Raw(item.Excerpt)
+                            </p>
+                            <hr />
+
+                            @if (item.Tags.Any())
+                            {
+                                var elements = item.Tags.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
+
+                                <ul class="list-unstyled">
+                                    <li class="list-inline-item">Posted in</li>
+                                    @foreach (string tags in elements)
+                                    {
+                                        <li class="list-inline-item mb-3"> <a asp-controller="Home" asp-action="Category" asp-route-category="@tags.ToLowerInvariant()" asp-route-page="" class="badge badge-info">@tags</a></li>
+                                    }
+                                </ul>
+                            }
+
+                        </div>
+                    </div>
+                }
+                <br />
+                @await Html.PartialAsync("_SocialSharing", "aspnetcoreblog")
+                <div class="pagination justify-content-center">
+                    <nav aria-label="Page navigation example">
+                        <vc:pager paging-list="@Model" />
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

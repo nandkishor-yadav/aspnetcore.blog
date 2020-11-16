@@ -1,0 +1,47 @@
+﻿@model aspnetcore.blog.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container pt-lg-7">
+    <div class="row justify-content-center">
+        <div class="col-lg-5">
+            <div class="card bg-secondary shadow border-0">
+                
+                <div class="card-body px-lg-5 py-lg-5">
+
+                    <form asp-action="Login">
+                        <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+                        <div class="form-group mb-3">
+                            <div class="input-group input-group-alternative">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="Username" asp-for="UserName">
+                            </div>
+                            <span asp-validation-for="UserName" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group focused">
+                            <div class="input-group input-group-alternative">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="Password" asp-for="Password">
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+                        <div class="custom-control custom-control-alternative custom-checkbox">
+                            <input class="custom-control-input" asp-for="RememberMe">
+                            <label class="custom-control-label" asp-for="RememberMe"><span>Remember me</span></label>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary my-4">Sign in</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

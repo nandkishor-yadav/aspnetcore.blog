@@ -1,0 +1,17 @@
+﻿<div class="container">
+    <form class="form-inline Subscribe" id="SubscribeForm" method="post">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input type="email" name="EmailAddress" id="EmailAddress" class="form-control" placeholder="Enter email" required>
+                    <input type="hidden" name="PubDate" id="PubDate" value="@DateTime.Now" />
+                    <small>By subscribing, you consent us to send emails</small><br />
+                    <span id="message"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary ml-3" type="button" id="btnsubscribe">Subscribe</button>
+            </div>
+        </div>
+    </form>
+</div>

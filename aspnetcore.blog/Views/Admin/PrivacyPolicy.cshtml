@@ -1,0 +1,63 @@
+﻿@model IEnumerable<aspnetcore.blog.Models.PrivacyPolicy>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <partial name="_StatusMessages" />
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Create Date</th>
+                        <th>Published</th>
+                        <th>
+                            <a asp-controller="Admin" asp-action="NewPrivacyPolicy" class="btn btn-primary float-right">New</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.PubDate.ToString("MMMM dd, yyyy")</td>
+                            <td>@item.IsPublished</td>
+                            <td class="td-actions text-right">
+                                <a type="button" rel="tooltip" class="btn btn-success btn-icon btn-sm btn-simple" data-original-title="" title="Edit"
+                                   asp-controller="Admin" asp-action="UpdatePrivacyPolicy" asp-route-id="@item.Id">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+@section Scripts{
+    <script>
+        $("#navbar-main").each(function () {
+            $(this).removeClass("navbar navbar-main navbar-expand-lg navbar-transparent navbar-light headroom");
+            $(this).addClass("navbar navbar-main navbar-expand-lg navbar-dark bg-primary");
+        });
+
+          $(function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            var msg = '@TempData["msg"]';
+            if (msg != "") {
+                Toast.fire({
+                    type: 'success',
+                    title: '@TempData["msg"]'
+                })
+            }
+        });
+    </script>
+}

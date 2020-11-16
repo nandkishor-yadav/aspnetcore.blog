@@ -1,0 +1,145 @@
+﻿@model aspnetcore.blog.Models.Post
+
+@{
+    ViewData["Title"] = @Model.Title;
+    bool isCodePreview = Model.Content.Contains("</code>");
+    var host = Context.Request.Host.ToString();
+    string imageUri = string.Empty;
+    if (Constants.Blog.UseBlobStorage == "y")
+    {
+        imageUri = Model.CoverImagePath;
+    }
+    else
+    {
+        imageUri = $"/{"uploads"}/{Model.CoverImagePath}";
+    }
+}
+
+@section JSONLD{
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org/",
+          "@@type": "BlogPosting",
+          "mainEntityOfPage": {
+            "@@type": "WebPage",
+            "@@id": "@host"
+          },
+          "headline": "@Model.Title",
+          "description": "@Model.Excerpt",
+          "image": {
+            "@@type": "ImageObject",
+            "url": "@imageUri",
+            "width": "696",
+            "height": "150"
+          },
+          "author": {
+            "@@type": "Person",
+            "name": "@Constants.Blog.AuthorName"
+          },
+          "publisher": {
+            "@@type": "Organization",
+            "name": "@Constants.Blog.AuthorName",
+            "logo": {
+              "@@type": "ImageObject",
+              "url": "@imageUri",
+              "width": "600",
+              "height": "60"
+            }
+          },
+          "datePublished": "@Model.PubDate.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz")",
+          "dateModified": "@Model.LastModified.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz")"
+        }
+    </script>
+}
+
+@section MetaContent
+{
+    <link rel="canonical" href="https://@Context.Request.Host@Context.Request.Path" />
+    <meta name="description" content="@Model.Excerpt" />
+    <meta property="og:url" content="@Context.Request.Host@Context.Request.Path" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="@Model.Title" />
+    <meta property="og:description" content="@Model.Excerpt" />
+    <meta property="og:image" content="@imageUri" />
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@@aspnetcoreblog">
+    <meta name="twitter:creator" content="@@aspnetcoreblog">
+}
+
+
+<div class="section features-6">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-10">
+                <div class="info info-horizontal info-hover-primary" cdnify>
+                    <div class="description pl-4">
+                        <h1 class="display-4 title text-center">
+                            @Model.Title
+                        </h1>
+                        <div class="text-center">
+                            @if (Model.Tags.Any())
+                            {
+                                var elements = Model.Tags.Split(new[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
+
+                                <ul class="list-unstyled">
+                                    @foreach (string tags in elements)
+                                    {
+                                        <li class="list-inline-item"> <a asp-controller="Home" asp-action="Category" asp-route-category="@tags.ToLowerInvariant()" asp-route-page="" class="badge badge-info">@tags</a></li>
+                                    }
+                                </ul>
+                            }
+                        </div>
+                        <div class="mt-5">
+                            <p class="font-weight-bold text-center">
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                @Model.PubDate.ToString("MMMM dd, yyyy") , <span id="readtime"></span>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <a asp-controller="Admin" asp-action="edit" asp-route-id="@Model.Id" title="Edit the post">Edit post</a>
+                                }
+                            </p>
+                        </div>
+                        @if (imageUri != null)
+                        {
+                            <div class="text-center">
+                                <img src="@imageUri" class="img-fluid" alt="@Model.Title" style="max-width:100%;height:auto" asp-append-version="true" />
+                            </div>
+                        }
+
+
+                        <div class="imgres">
+                            @Html.Raw(Model.RenderContent())
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="text-center">@await Html.PartialAsync("_SocialSharing", Model.Title)</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (isCodePreview)
+{
+    <script src="~/js/prism.min.js"></script>
+    <link href="~/css/prism.min.css" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script>
+
+        // calculate reading time
+        $(document).ready(function () {
+            var text = "@Model.Content";
+            var wordsPerMinute = 200;
+            var noOfWords = text.split(/\s/g).length;
+            var minutes = noOfWords / wordsPerMinute;
+            var readTime = Math.ceil(minutes);
+            var displayTime=readTime+ " minutes read";
+            $("#readtime").text(displayTime);
+        });
+    </script>
+}
+

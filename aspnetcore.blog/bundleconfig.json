@@ -1,0 +1,16 @@
+[
+
+  {
+    "outputFileName": "wwwroot/js/bundle.min.js",
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "inputFiles": [
+      "wwwroot/lib/jquery/dist/jquery.min.js",
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+      "wwwroot/js/lazyloading.js"
+    ]
+  }
+
+]

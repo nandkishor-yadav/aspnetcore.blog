@@ -1,0 +1,20 @@
+{
+  "name": "aspnetcore.blog",
+  "short_name": "aspnetcore.blog",
+  "description": "A short description of the blog.",
+  "icons": [
+    {
+      "src": "/img/icon192x192.png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/img/icon512x512.png",
+      "sizes": "512x512"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}

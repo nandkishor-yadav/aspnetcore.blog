@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @RenderSection("MetaContent", false)
+    @RenderSection("Preload", false)
+    <title>@ViewData["Title"]</title>
+    @RenderSection("JSONLD", false)
+
+    <environment include="Development">
+        <link href="~/css/StyleSheet.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'" />
+    </environment>
+    <environment exclude="Development">
+        <link href="~/css/style.min.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'" asp-append-version="true" />
+    </environment>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/icon16x16.png" asp-append-version="true" />
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body class="landing-page">
+    <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light headroom">
+        <div class="container">
+            <a href="/" class="navbar-brand mr-lg-5">
+                <img src="~/img/aspnetcore.blog.png" asp-append-version="true" alt="logo-aspnetcoreblog" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global"
+                    aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="navbar_global">
+                <div class="navbar-collapse-header">
+                    <div class="row">
+                        <div class="col-6 collapse-brand">
+                            <a href="/">
+                                <img src="~/img/maspnetcore.blog.png" asp-append-version="true" alt="mobilelogo-aspnetcoreblog" width="500" height="150" />
+                            </a>
+                        </div>
+                        <div class="col-6 collapse-close">
+                            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar_global"
+                                    aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+                                <span></span>
+                                <span></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-icon" asp-controller="Admin" asp-action="Index">
+                                Posts
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
+                        <li class="nav-item dropdown">
+                            <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown" role="button">
+                                <i class="ni ni-ui-04 d-lg-none"></i>
+                                <span class="nav-link-inner--text">Settings</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-xl">
+                                <div class="dropdown-menu-inner">
+                                    <a asp-controller="Admin" asp-action="About"
+                                       class="media d-flex align-items-center">
+                                        <div class="icon icon-shape bg-gradient-primary rounded-circle text-white">
+                                            <i class="ni ni-single-02"></i>
+                                        </div>
+                                        <div class="media-body ml-3">
+                                            <h6 class="heading text-primary mb-md-1">About Me</h6>
+                                            <p class="description d-none d-md-inline-block mb-0">
+                                                Edit about me section.
+                                            </p>
+                                        </div>
+                                    </a>
+                                    <a asp-controller="Admin" asp-action="PrivacyPolicy"
+                                       class="media d-flex align-items-center">
+                                        <div class="icon icon-shape bg-gradient-success rounded-circle text-white">
+                                            <i class="ni ni-palette"></i>
+                                        </div>
+                                        <div class="media-body ml-3">
+                                            <h6 class="heading text-primary mb-md-1">Privacy Policy</h6>
+                                            <p class="description d-none d-md-inline-block mb-0">
+                                                Edit privacy policy content.
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-icon" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Home" asp-action="About" class="nav-link nav-link-icon">About</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-icon" href="#">
+                                <i class="fa fa-facebook-square"></i>
+                                <span class="nav-link-inner--text d-lg-none">Facebook</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-icon" href="#">
+                                <i class="fa fa-twitter-square"></i>
+                                <span class="nav-link-inner--text d-lg-none">Twitter</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-icon" href="#">
+                                <i class="fa fa-github"></i>
+                                <span class="nav-link-inner--text d-lg-none">Github</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-icon" href="#">
+                                <i class="fa fa-linkedin"></i>
+                                <span class="nav-link-inner--text d-lg-none">Linkedin</span>
+                            </a>
+                        </li>
+                    </ul>
+                }
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+    </nav>
+    <div class="wrapper">
+        <div class="section section-hero section-shaped">
+            <div class="shape shape-style-3 shape-default">
+                <span class="span-150"></span>
+                <span class="span-50"></span>
+                <span class="span-50"></span>
+                <span class="span-75"></span>
+                <span class="span-100"></span>
+                <span class="span-75"></span>
+                <span class="span-50"></span>
+                <span class="span-100"></span>
+                <span class="span-50"></span>
+                <span class="span-100"></span>
+            </div>
+            <div class="page-header">
+                <div class="container shape-container d-flex align-items-center py-lg">
+                    <div class="col px-0">
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-lg-8 text-center">
+                                <h1 class="text-white display-1">@Constants.Blog.Name</h1>
+                                <p class="display-4 font-weight-normal text-white opacity-8">@Constants.Blog.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="separator separator-bottom separator-skew zindex-100">
+                <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <polygon class="fill-white" points="2560 0 2560 100 0 100"></polygon>
+                </svg>
+            </div>
+        </div>
+        @RenderBody()
+        <partial name="_CookieConsentPartial" />
+        <a id="scroll_button"></a>
+        <footer class="footer">
+            <div class="container">
+                <div class="row row-grid align-items-center mb-5">
+                    <div class="col-lg-6">
+                        <partial name="_NewsLetter" />
+                    </div>
+                </div>
+                <hr>
+                <div class="row align-items-center justify-content-md-between">
+                    <div class="col-md-6">
+                        <div class="copyright">
+                            2020 - @Constants.Blog.Name - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="nav nav-footer justify-content-end">
+                            <li class="nav-item">
+                                Powered by<a href="https://github.com/nandkishor-yadav/aspnetcore.blog" class="nav-link" target="_blank" rel="noopener noreferrer"> aspnetcore.blog</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="~/js/bundle.min.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+    <script>
+        //SCROLL TO TOP
+        var btn = $('#scroll_button');
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 300) {
+                btn.addClass('show');
+            } else {
+                btn.removeClass('show');
+            }
+        });
+
+        btn.on('click', function (e) {
+            e.preventDefault();
+            $('html, body').animate({ scrollTop: 0 }, '300');
+        });
+      // Newsletter
+        $(document).ready(function () {
+            $("#btnsubscribe").click(function (e) {
+                //Serialize the form datas.
+                var valdata = $("#SubscribeForm").serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/NewsLetter",
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(
+                            "XSRF-TOKEN",
+                            $('input:hidden[name="__RequestVerificationToken"]').val()
+                        );
+                    },
+                    dataType: "json",
+                    data: valdata,
+                    success: function (response) {
+                        if (response.success) {
+                            $("#message").text(response.responseText).addClass("text-success");
+                            $("#EmailAddress").val("");
+                        } else {
+                            $("#message").text(response.responseText).addClass("text-danger small");
+                        }
+                    },
+                    error: function (response) {
+                        $("#message").text("Error");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

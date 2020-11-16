@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Http.Features
+
+@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var showBanner = !consentFeature?.CanTrack ?? false;
+    var cookieString = consentFeature?.CreateConsentCookie();
+}
+<link rel="stylesheet" defer href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css" media="none" onload="if(media!='all')media='all'" asp-append-version="true" />
+
+
+@if (showBanner)
+{
+    <div id="cookieConsent" class="alert text-center cookiealert" role="alert">
+        <b>Do you like cookies?</b> &#x1F36A;We use cookies to ensure you get the best experience on our website. <a asp-controller="Home" asp-action="Privacy" class="primary__color">Learn More</a>.
+        <button type="button" class="btn btn-info btn-sm acceptcookies" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
+            <span aria-hidden="true">Accept</span>
+        </button>
+    </div>
+    <script defer src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js" asp-append-version="true"></script>
+    <script>
+        (function () {
+            var button = document.querySelector("#cookieConsent button[data-cookie-string]");
+            button.addEventListener("click", function (event) {
+                document.cookie = button.dataset.cookieString;
+            }, false);
+        })();
+    </script>
+}

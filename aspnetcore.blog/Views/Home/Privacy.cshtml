@@ -1,0 +1,14 @@
+﻿@model aspnetcore.blog.Models.PrivacyPolicy
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+@section MetaContent{
+    <meta name="description" content="privacy policy" />
+}
+
+<div class="container">
+    @if (Model != null)
+    {
+        @Html.Raw(@Model.Content)
+    }
+</div>

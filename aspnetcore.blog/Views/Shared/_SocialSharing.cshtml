@@ -1,0 +1,28 @@
+﻿@model string
+@{ string currentUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.Path}";
+    string enc = System.Net.WebUtility.UrlEncode(currentUrl);
+    string text = System.Net.WebUtility.UrlEncode(Model); }
+
+<div class="container">
+    <div class="row row-grid align-items-center mb-5">
+        <div class="col-lg-6 text-lg-center btn-wrapper">
+            <a onclick="window.open(this.href, 'twitter-share','width=580,height=296');return false;" href="https://twitter.com/intent/tweet?url=@enc&text=@text" rel="noopener noreferrer nofollow"
+               class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip" data-original-title="Share on Twitter">
+                <span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
+            </a>
+            <a onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;" href="https://www.facebook.com/sharer/sharer.php?u=@enc" rel="noopener noreferrer nofollow"
+               class="btn-icon-only rounded-circle btn btn-facebook" data-toggle="tooltip" data-original-title="Share on Facebook">
+                <span class="btn-inner--icon"><i class="fa fa-facebook-f"></i></span>
+            </a>
+            <a target="_blank" href="mailto:?subject=@Model&amp;body=@enc" rel="noopener noreferrer nofollow"
+               class="btn btn-icon-only btn-default rounded-circle" data-toggle="tooltip" data-original-title="Email">
+                <span class="btn-inner--icon"><i class="fa fa-envelope"></i></span>
+            </a>
+            <a onclick="window.open(this.href, 'linkedin-share','width=580,height=296');return false;" href="http://www.linkedin.com/shareArticle?mini=true&amp;url=@enc&title=@text" rel="noopener noreferrer nofollow"
+               class="btn btn-icon-only btn-twitter rounded-circle" data-toggle="tooltip"
+               data-original-title="Star on Linkedin">
+                <span class="btn-inner--icon"><i class="fa fa-linkedin"></i></span>
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+﻿@model aspnetcore.blog.Models.PrivacyPolicy
+
+@{
+    ViewData["Title"] = "Add Privacy Policy";
+}
+
+
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <partial name="_StatusMessages" />
+    <form asp-action="UpdatePrivacyPolicy" id="edit">
+        <div class="form-group">
+            <textarea asp-for="Content" rows="20" aria-label="Content" class="form-control form-control-alternative">Content</textarea>
+            <span asp-validation-for="Content" class="text-danger small"></span>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <input asp-for="IsPublished" />
+            <label asp-for="IsPublished">Is published</label>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+        $("#navbar-main").each(function () {
+            $(this).removeClass("navbar navbar-main navbar-expand-lg navbar-transparent navbar-light headroom");
+            $(this).addClass("navbar navbar-main navbar-expand-lg navbar-dark bg-primary");
+        });
+    </script>
+}
+

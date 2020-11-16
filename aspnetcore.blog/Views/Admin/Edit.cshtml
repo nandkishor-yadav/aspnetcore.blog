@@ -1,0 +1,103 @@
+﻿@model aspnetcore.blog.Models.Post
+
+@{
+    ViewData["Title"] = "Edit";
+    var imageUri = string.Empty;
+
+    if (Constants.Blog.UseBlobStorage == "y")
+    {
+        imageUri = $"{Constants.Blog.BlobContainerNameFeaturedImage}{"/"}{Model.ExistingCoverImagePath}";
+    }
+    else
+    {
+        imageUri = $"{"/uploads/"}{Model.ExistingCoverImagePath}" ;
+    }
+}
+
+
+<div class="container">
+    <div class="text-center"><a asp-action="Index" class="btn btn-warning" type="submit">Back to List</a></div>
+    <form asp-action="Edit" enctype="multipart/form-data" id="edit">
+        <input asp-for="Id" type="hidden" />
+        <input asp-for="PubDate" type="hidden" />
+        <input asp-for="Slug" type="hidden" />
+        @Html.HiddenFor(model => model.ExistingCoverImagePath)
+        <div class="form-group">
+            <label asp-for="Title" class="control-label">Title</label>
+            <input asp-for="Title" placeholder="Title of blog post" aria-describedby="desc_title" class="form-control form-control-alternative" />
+            <span asp-validation-for="Title" class="text-danger small"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Tags" class="control-label">Tags</label>
+            <input asp-for="Tags" id="selecttag" aria-describedby="desc_categories" list="taglist" class="form-control form-control-alternative" />
+            <span class="small text-muted" id="desc_categories">Select, or build a comma separated list of keywords - to remove double the keyword</span>
+            <span asp-validation-for="Tags" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Excerpt" class="label">Excerpt</label>
+            <textarea asp-for="Excerpt" rows="3" placeholder="Short description of blog post" aria-describedby="desc_excerpt" class="form-control form-control-alternative">Short_desc</textarea>
+            <span class="small text-muted" id="desc_excerpt">A brief description of the content of the post</span>
+            <span asp-validation-for="Excerpt" class="text-danger small"></span>
+        </div>
+
+
+        <div class="form-group form-file-upload form-file-multiple">
+            <label class="label">Featured Image: </label>
+            <input type="file" class="inputFileHidden" name="CoverImage" id="CoverImage" onchange="doTest()">
+            <div class="input-group">
+                <img id="uploadPreview" src="" width="200" style="display:none" />
+            </div>
+        </div>
+        <img id="img" src="@imageUri" width="200" asp-append-version="true" />
+
+
+        <div class="form-group">
+            <textarea asp-for="Content" rows="20" aria-label="Content" class="form-control form-control-alternative">Description</textarea>
+            <span asp-validation-for="Content" class="text-danger small"></span>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a asp-action="Index" class="btn btn-warning" type="submit">Back to List</a>
+            <input asp-for="IsPublished" />
+            <label asp-for="IsPublished">Is published</label>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script>
+        $("#navbar-main").each(function () {
+            $(this).removeClass("navbar navbar-main navbar-expand-lg navbar-transparent navbar-light headroom");
+            $(this).addClass("navbar navbar-main navbar-expand-lg navbar-dark bg-primary");
+        });
+
+        //file upload preview
+        if (window.FileReader) {
+
+            var reader = new FileReader(), rFilter = /^(image\/bmp|image\/cis-cod|image\/webp|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x-cmu-raster|image\/x-cmx|image\/x-icon|image\/x-portable-anymap|image\/x-portable-bitmap|image\/x-portable-graymap|image\/x-portable-pixmap|image\/x-rgb|image\/x-xbitmap|image\/x-xpixmap|image\/x-xwindowdump)$/i;
+
+            reader.onload = function (oFREvent) {
+                preview = document.getElementById("uploadPreview")
+                preview.src = oFREvent.target.result;
+                preview.style.display = "block";
+            };
+
+            function doTest() {
+
+                if (document.getElementById("CoverImage").files.length === 0) { return; }
+                var file = document.getElementById("CoverImage").files[0];
+                if (!rFilter.test(file.type)) { alert("You must select a valid image file!"); return; }
+                reader.readAsDataURL(file);
+            }
+
+        } else {
+            alert("FileReader object not found :( \nTry using Chrome, Firefox or WebKit");
+        }
+    </script>
+}
+
