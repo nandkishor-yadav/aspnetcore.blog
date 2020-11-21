@@ -120,11 +120,10 @@ namespace aspnetcore.blog
             }
             else
             {
-                app.ConfigureExceptionHandler();
-
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
             app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
             app.UseHttpsRedirection();

@@ -1,8 +1,11 @@
-﻿
+﻿@{ 
+    ViewData["Title"] = "Post list";
+}
 
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            <h1 class="display-4 text-center">@ViewData["Title"]</h1>
             <partial name="_StatusMessages" />
             <input id="searchbox" class="form-control form-control-alternative shadow" placeholder="Search by title..." type="text">
             <table class="table table-hover">

@@ -146,13 +146,10 @@ namespace aspnetcore.blog.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int? statusCode = null)
         {
-            if (statusCode.HasValue)
+            if (statusCode.HasValue && (statusCode.Value == 404 || statusCode.Value == 500))
             {
-                if (statusCode.Value == 404 || statusCode.Value == 500)
-                {
-                    var viewName = statusCode.ToString();
-                    return View(viewName);
-                }
+                var viewName = statusCode.ToString();
+                return View(viewName);
             }
             return View();
         }
